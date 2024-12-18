@@ -1,0 +1,156 @@
+<!-- 充值 -->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>充值</title>
+    <link href="../../layui/css/layui.css" rel="stylesheet">
+    <!-- 样式 -->
+    <link href="../../css/style.css" rel="stylesheet"/>
+    <!-- 主题（主要颜色设置） -->
+    <link href="../../css/theme.css" rel="stylesheet"/>
+    <!-- 通用的css -->
+    <link href="../../css/common.css" rel="stylesheet"/>
+    <style type="text/css">
+        .pay-type-list {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .pay-type-item {
+            background: #FFFFFF;
+            border: 3px dotted #EEEEEE;
+            margin: 20px;
+            padding: 20px;
+            width: 200px;
+        }
+    </style>
+</head>
+<body style="background: #EEEEEE;">
+
+<div id="app">
+
+    <form class="layui-form" lay-filter="myForm">
+        <div class="layui-form-item" style="margin: 20px;background: #FFFFFF;border:3px dotted #EEEEEE;padding: 20px;">
+            <label class="layui-form-label">充值金额</label>
+            <div class="layui-input-block">
+                <input autocomplete="off" class="layui-input" id="newMoney" lay-verify="required|double" name="newMoney"
+                       placeholder="充值金额"
+                       type="number">
+            </div>
+        </div>
+        <div class="pay-type-list">
+            <div class="pay-type-item">
+                <input checked name="type" type="radio" value="微信支付">
+                <img alt src="../../img/weixin.png">
+                <span>微信支付</span>
+            </div>
+            <div class="pay-type-item">
+                <input name="type" type="radio" value="支付宝支付">
+                <img alt src="../../img/zhifubao.png">
+                <span>支付宝支付</span>
+            </div>
+            <div class="pay-type-item">
+                <input name="type" type="radio" value="建设银行">
+                <img alt src="../../img/jianshe.png" style="width: 120px;height: 60px;">
+            </div>
+            <div class="pay-type-item">
+                <input name="type" type="radio" value="农业银行">
+                <img alt src="../../img/nongye.png" style="width: 120px;height: 60px;">
+            </div>
+            <div class="pay-type-item">
+                <input name="type" type="radio" value="中国银行">
+                <img alt src="../../img/zhongguo.png" style="width: 120px;height: 60px;">
+            </div>
+            <div class="pay-type-item">
+                <input name="type" type="radio" value="交通银行">
+                <img alt src="../../img/jiaotong.png" style="width: 120px;height: 60px;">
+            </div>
+        </div>
+        <button class="layui-btn btn-submit btn-theme"
+                lay-filter="*"
+                lay-submit style="margin-left: 20px;width:860px;height: 40px;line-height: 40px;">确认支付
+        </button>
+    </form>
+
+</div>
+
+<!-- layui -->
+<script src="../../layui/layui.js"></script>
+<!-- vue -->
+<script src="../../js/vue.js"></script>
+<!-- 组件配置信息 -->
+<script src="../../js/config.js"></script>
+<!-- 扩展插件配置信息 -->
+<script src="../../modules/config.js"></script>
+<!-- 工具方法 -->
+<script src="../../js/utils.js"></script>
+<!-- 校验格式工具类 -->
+<script src="../../js/validate.js"></script>
+
+<script>
+    var vue = new Vue({
+        el: '#app',
+        data: {
+            user: {}
+        },
+        filters: {
+            newsDesc: function (val) {
+                if (val) {
+                    if (val.length > 200) {
+                        return val.substring(0, 200).replace(/<[^>]*>/g).replace(/undefined/g, '');
+                    } else {
+                        return val.replace(/<[^>]*>/g).replace(/undefined/g, '');
+                    }
+                }
+                return '';
+            }
+        },
+        methods: {
+            jump(url) {
+                jump(url)
+            }
+        }
+    })
+
+    layui.use(['layer', 'element', 'http', 'jquery', 'form'], function () {
+        var layer = layui.layer;
+        var element = layui.element;
+        var http = layui.http;
+        var jquery = layui.jquery;
+        var form = layui.form;
+
+        // 查询用户信息
+        let table = localStorage.getItem("userTable");
+        http.request(table + '/session', 'get', {}, function (data) {
+            vue.user = data.data;
+        });
+
+        // 提交表单
+        form.on('submit(*)', function (data) {
+            // 添加金额
+            data = data.field;
+            if (Number(data.newMoney) <= 0 || (String(data.newMoney).indexOf('.') != -1 && data.newMoney.split(".")[1].length > 2)) {
+                layer.msg('请输入正确金额，只能充值两位小数的正数金额', {
+                    time: 2000,
+                    icon: 5
+                });
+                return false;
+            }
+            vue.user.newMoney = Number(vue.user.newMoney) + Number(data.newMoney);
+            http.requestJson(table + '/update', 'post', vue.user, function (data) {
+                layer.msg('充值成功', {
+                    time: 2000,
+                    icon: 6
+                }, function () {
+                    window.parent.location.reload();
+                });
+            });
+            return false
+        });
+
+    });
+</script>
+</body>
+</html>

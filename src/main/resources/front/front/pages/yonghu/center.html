@@ -1,0 +1,640 @@
+<!-- 个人中心 -->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1" name="viewport">
+    <title>个人中心</title>
+    <link href="../../layui/css/layui.css" rel="stylesheet">
+    <!-- 引入element样式 -->
+    <link href="../../xznstatic/css/element.min.css" rel="stylesheet">
+    <!-- 样式 -->
+    <link href="../../xznstatic/css/style.css" rel="stylesheet"/>
+    <!-- 主题（主要颜色设置） -->
+    <link href="../../css/theme.css" rel="stylesheet"/>
+    <!-- 通用的css -->
+    <link href="../../xznstatic/css/common.css" rel="stylesheet"/>
+    <link href="../../xznstatic/css/bootstrap.min.css" rel="stylesheet"/>
+</head>
+<style>
+    html::after {
+        position: fixed;
+        top: 0;
+        right: 0;
+        left: 0;
+        bottom: 0;
+        content: '';
+        display: block;
+        background-attachment: fixed;
+        background-size: cover;
+        background-position: center;
+        z-index: -1;
+    }
+
+    /*小菜单*/
+    /*添加地址按钮样式*/
+    .btn-container {
+        margin-top: 20px;
+        text-align: right;
+        margin-bottom: 60px;
+        border: 2px dotted #EEEEEE;
+        padding: 20px;
+    }
+
+    /*腰线*/
+    .index-title {
+        text-align: center;
+        box-sizing: border-box;
+        width: 980px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+
+    .index-title span {
+        padding: 0 10px;
+        line-height: 1.4;
+    }
+
+    /*小菜单样式*/
+
+    .center-container .left-container {
+        border: 2px dotted #EEEEEE;
+        width: 200px;
+        padding-top: 20px;
+    }
+
+    .center-container .right-container {
+        flex: 1;
+        border: 2px dotted #EEEEEE;
+        background: #FFFFFF;
+        text-align: left;
+        padding: 20px;
+        padding-top: 40px;
+    }
+
+    .center-container .layui-nav-tree {
+        margin-top: 20px;
+        width: 80%;
+    }
+
+    .center-container .layui-nav {
+        position: inherit;
+    }
+
+    .center-container .layui-nav-tree .layui-nav-item {
+        line-height: 44px;
+        font-size: 16px;
+        color: rgba(17, 17, 17, 1);
+        border-width: 0px 0px 1px 0px;
+        border-style: solid;
+        border-radius: 0;
+        background-color: #fff;
+        text-align: center;
+        border-color: var(--publicMainColor);
+        box-shadow: 0 0 0px var(--publicMainColor);
+    }
+
+    .center-container .layui-nav-tree .layui-nav-bar {
+        height: 44px !important;
+        opacity: 0 !important;
+    }
+
+    .center-container .layui-nav-tree .layui-nav-item.layui-this {
+        font-size: 16px;
+        color: rgba(17, 17, 17, 1);
+        border-width: 0;
+        border-style: solid;
+        border-radius: 0;
+        background-color: var(--publicSubColor);
+    }
+
+    .center-container .layui-nav-tree .layui-nav-item:hover {
+        font-size: 14px;
+        color: #fff;
+        border-width: 0;
+        border-style: solid;
+        border-radius: 0;
+        background-color: var(--publicMainColor);
+    }
+
+    .center-container .layui-nav-tree .layui-nav-item a {
+        line-height: inherit;
+        height: auto;
+        background-color: inherit;
+        color: inherit;
+        text-decoration: none;
+        border-color: var(--publicMainColor);
+        box-shadow: 0 0 0px var(--publicMainColor);
+    }
+
+    /*信息样式*/
+    .center-container {
+        width: 1200px;
+        margin: 0 auto;
+        margin-top: 20px;
+        text-align: left;
+        display: flex;
+        margin-bottom: 20px;
+    }
+
+    .right-container {
+        position: relative;
+    }
+
+    .right-container .layui-form-item {
+        display: flex;
+        align-items: center;
+    }
+
+    .right-container .layui-input-block {
+        margin: 0;
+        flex: 1;
+    }
+
+    .right-container .input .layui-input {
+        padding: 0 12px;
+        height: 40px;
+        font-size: 15px;
+        border-radius: 4px;
+        border-width: 1px;
+        border-style: solid;
+        background-color: #fff;
+        text-align: left;
+    }
+
+    .right-container .select .layui-input {
+        padding: 0 12px;
+        height: 40px;
+        font-size: 15px;
+        border-radius: 4px;
+        border-width: 1px;
+        border-style: solid;
+        background-color: #fff;
+        text-align: left;
+    }
+
+    .right-container .date .layui-input {
+        padding: 0 12px;
+        height: 40px;
+        font-size: 15px;
+        color: rgba(160, 67, 26, 1);
+        border-radius: 4px;
+        border-width: 1px;
+        border-style: solid;
+        background-color: #fff;
+        box-shadow: 0 0 0px rgba(255, 0, 0, .8);
+        text-align: left;
+    }
+
+</style>
+<body class='bodyClass'>
+<div id="app">
+    <div :style='{"padding":"10px","boxShadow":"0 0 2px rgba(160, 67, 26, 1)","margin":"10px auto","borderColor":"rgba(0,0,0,.3)","color":"rgba(255, 255, 255, 1)","borderRadius":"4px","borderWidth":"0","fontSize":"20px","borderStyle":"solid","height":"auto"}'
+         class="index-title sub_backgroundColor">
+        <span>USER / CENTER</span><span>个人中心</span>
+    </div>
+    <!-- 标题 -->
+    <div class="center-container">
+        <!-- 个人中心菜单 config.js-->
+        <div :style='{"backgroundColor":"#fff","padding":"0","boxShadow":"0px ","margin":"0","borderColor":"rgba(135, 206, 250, 1)","borderRadius":"0","borderWidth":"0px ","width":"20%","borderStyle":"solid"}'
+             class="left-container">
+            <ul class="layui-nav layui-nav-tree">
+                <li :class="index==0?'layui-this':''" class="layui-nav-item" v-bind:key="index"
+                    v-for="(item,index) in centerMenu">
+                    <a :href="'javascript:jump(\''+item.url+'\')'">{{item.name}}</a>
+                </li>
+            </ul>
+        </div>            <!-- 个人中心菜单 -->
+        <!-- 个人中心 -->
+        <div :style='{"backgroundColor":"#fff","padding":"20px","boxShadow":"0px rgba(255,0,0,.8)","margin":"0","backgroundColor":"#fff","borderRadius":"0","borderWidth":"1px","borderStyle":"solid","width":"80%"}'
+             class="right-container sub_borderColor">
+            <form class="layui-form" v-if="!changePassword">
+                <!-- 主键 -->
+                <input id="id" name="id" type="hidden" v-model="detail.id"/>
+                <div :style='{"padding":"10px","boxShadow":"0 0 0px rgba(255,0,0,.8)","margin":"0 0 10px 0","backgroundColor":"#fff","borderRadius":"1px","borderWidth":"0 0 1px 0","borderStyle":"solid"}'
+                     class="layui-form-item main_borderColor">
+                    <label :style='{"width":"110px","padding":"0 12px 0 0","fontSize":"15px","color":"#333","textAlign":"left"}'
+                           class="layui-form-label">
+                        账户
+                    </label>
+                    <div class="layui-input-block input">
+                        <input autocomplete="off" class="layui-input" id="username" lay-verify="required" name="username"
+                               placeholder="账户" type="text" v-model="detail.username">
+                    </div>
+                </div>
+                <div :style='{"padding":"10px","boxShadow":"0 0 0px rgba(255,0,0,.8)","margin":"0 0 10px 0","backgroundColor":"#fff","borderRadius":"1px","borderWidth":"0 0 1px 0","borderStyle":"solid"}'
+                     class="layui-form-item main_borderColor">
+                    <label :style='{"width":"110px","padding":"0 12px 0 0","fontSize":"15px","color":"#333","textAlign":"left"}'
+                           class="layui-form-label">
+                        用户姓名
+                    </label>
+                    <div class="layui-input-block input">
+                        <input autocomplete="off" class="layui-input" id="yonghuName" lay-verify="required"
+                               name="yonghuName" placeholder="用户姓名" type="text" v-model="detail.yonghuName">
+                    </div>
+                </div>
+                <div :style='{"padding":"10px","boxShadow":"0 0 0px rgba(255,0,0,.8)","margin":"0 0 10px 0","backgroundColor":"#fff","borderRadius":"1px","borderWidth":"0 0 1px 0","borderStyle":"solid"}'
+                     class="layui-form-item main_borderColor">
+                    <label :style='{"width":"110px","padding":"0 12px 0 0","fontSize":"15px","color":"#333","textAlign":"left"}'
+                           class="layui-form-label" style="opacity: 0;">
+                        头像
+                    </label>
+                    <div class="layui-input-block">
+                        <img :src="baseUrl+detail.yonghuPhoto"
+                             :style='{"boxShadow":"0 0 3px rgba(160, 67, 26, 1)","borderColor":"rgba(135, 206, 250, 1)","backgroundColor":"#fff","borderRadius":"10px","borderWidth":"1px","width":"80px","borderStyle":"solid","height":"80px"}'
+                             id="yonghuPhotoImg"
+                             style="width: 100px;height: 100px;border-radius: 50%;border: 2px solid #EEEEEE;">
+                        <input id="yonghuPhoto" name="yonghuPhoto" type="hidden" v-model="detail.yonghuPhoto"/>
+                    </div>
+                </div>
+                <div :style='{"padding":"10px","boxShadow":"0 0 0px rgba(255,0,0,.8)","margin":"0 0 10px 0","backgroundColor":"#fff","borderRadius":"1px","borderWidth":"0 0 1px 0","borderStyle":"solid"}'
+                     class="layui-form-item main_borderColor">
+                    <label :style='{"width":"110px","padding":"0 12px 0 0","fontSize":"15px","color":"#333","textAlign":"left"}'
+                           class="layui-form-label" style="opacity: 0;">
+                        头像
+                    </label>
+                    <div class="layui-input-block">
+                        <button :style='{"padding":"0 10px","boxShadow":"0 0 0px rgba(255,0,0,.5)","margin":"0 10px 0 0","borderColor":"#ccc","color":"#fff","borderRadius":"8px","borderWidth":"0","width":"auto","fontSize":"14px","borderStyle":"solid","height":"44px"}'
+                                class="main_backgroundColor"
+                                class="layui-btn btn-theme" id="yonghuPhotoUpload"
+                                type="button">
+                            <i :style='{"color":"#fff","show":true,"fontSize":"14px"}' class="layui-icon" v-if="true">&#xe67c;</i>上传头像
+                        </button>
+                    </div>
+                </div>
+                <div :style='{"padding":"10px","boxShadow":"0 0 0px rgba(255,0,0,.8)","margin":"0 0 10px 0","backgroundColor":"#fff","borderRadius":"1px","borderWidth":"0 0 1px 0","borderStyle":"solid"}'
+                     class="layui-form-item main_borderColor">
+                    <label :style='{"width":"110px","padding":"0 12px 0 0","fontSize":"15px","color":"#333","textAlign":"left"}'
+                           class="layui-form-label">
+                        用户手机号
+                    </label>
+                    <div class="layui-input-block input">
+                        <input autocomplete="off" class="layui-input" id="yonghuPhone" lay-verify="required|phone"
+                               name="yonghuPhone" placeholder="用户手机号" type="text"
+                               v-model="detail.yonghuPhone">
+                    </div>
+                </div>
+                <div :style='{"padding":"10px","boxShadow":"0 0 0px rgba(255,0,0,.8)","margin":"0 0 10px 0","backgroundColor":"#fff","borderRadius":"1px","borderWidth":"0 0 1px 0","borderStyle":"solid"}'
+                     class="layui-form-item main_borderColor">
+                    <label :style='{"width":"110px","padding":"0 12px 0 0","fontSize":"15px","color":"#333","textAlign":"left"}'
+                           class="layui-form-label">
+                        用户身份证号
+                    </label>
+                    <div class="layui-input-block input">
+                        <input autocomplete="off" class="layui-input" id="yonghuIdNumber" lay-verify="required|identity"
+                               name="yonghuIdNumber" placeholder="用户身份证号" type="text"
+                               v-model="detail.yonghuIdNumber">
+                    </div>
+                </div>
+                <div :style='{"padding":"10px","boxShadow":"0 0 0px rgba(255,0,0,.8)","margin":"0 0 10px 0","backgroundColor":"#fff","borderRadius":"1px","borderWidth":"0 0 1px 0","borderStyle":"solid"}'
+                     class="layui-form-item main_borderColor">
+                    <label :style='{"width":"110px","padding":"0 12px 0 0","fontSize":"15px","color":"#333","textAlign":"left"}'
+                           class="layui-form-label">
+                        性别
+                    </label>
+                    <div class="layui-input-block select">
+                        <el-select filterable id="sexTypes" name="sexTypes"
+                                   placeholder="请选择性别 Search111 " style="border-color: var(--publicMainColor, #808080);" v-model="detail.sexTypes">
+                            <el-option
+                                    :label="item.indexName"
+                                    :value="item.codeIndex"
+                                    v-bind:key="item.codeIndex"
+                                    v-for="(item,index) in sexTypesList">
+                            </el-option>
+                        </el-select>
+                    </div>
+                </div>
+                <div :style='{"padding":"10px","boxShadow":"0 0 0px rgba(255,0,0,.8)","margin":"0 0 10px 0","backgroundColor":"#fff","borderRadius":"1px","borderWidth":"0 0 1px 0","borderStyle":"solid"}'
+                     class="layui-form-item main_borderColor">
+                    <label :style='{"width":"110px","padding":"0 12px 0 0","fontSize":"15px","color":"#333","textAlign":"left"}'
+                           class="layui-form-label">余额</label>
+                    <div class="layui-input-inline input">
+                        <input autocomplete="off" class="layui-input" disabled="disabled" id="newMoney" name="newMoney"
+                               placeholder="余额" type="number" v-model="detail.newMoney">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">
+                        <i class="layui-icon" style="font-size: 20px;color: red;">&#xe65e;</i>
+                        <a href="javascript:void(0)" id="btn-recharge">点我充值</a>
+                        <!--<div style="text-align: center;width: 100px;height: 41px;line-height: 41px;background-color: rgb(59 161 82);border-radius: 6px;margin-left: 10px;"
+                             @click="" >充值会员</div>-->
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <div class="layui-input-block" style="display: flex;flex-wrap:wrap;">
+                        <button :style='{"padding":"0 10px","boxShadow":"0 0 0px rgba(255,0,0,.5)","margin":"10px auto 0","borderColor":"#ccc","color":"#fff","borderRadius":"8px","borderWidth":"0","width":"30%","fontSize":"15px","borderStyle":"solid","height":"44px"}'
+                                class="main_backgroundColor"
+                                class="layui-btn btn-submit btn-theme" lay-filter="*" lay-submit>更新信息
+                        </button>
+                        <button :style='{"padding":"0 10px","boxShadow":"0 0 0px rgba(255,0,0,.5)","margin":"10px auto","borderColor":"#ccc","backgroundColor":"var(--publicSubColor)","color":"rgba(255, 255, 255, 1)","borderRadius":"8px","borderWidth":"0","width":"30%","fontSize":"14px","borderStyle":"solid","height":"44px"}'
+                                @click="xiugaimima()"
+                                class="layui-btn">修改密码
+                        </button>
+                        <button :style='{"padding":"0 10px","boxShadow":"0 0 0px rgba(255,0,0,.5)","margin":"10px auto","borderColor":"#ccc","backgroundColor":"rgba(255, 0, 0, 1)","color":"rgba(255, 255, 255, 1)","borderRadius":"8px","borderWidth":"0","width":"30%","fontSize":"14px","borderStyle":"solid","height":"44px"}'
+                                @click="logout" class="layui-btn btn-submit">退出登录
+                        </button>
+                    </div>
+                </div>
+            </form>
+            <div style="width:780px;height: 100%;background-color: #fff;position: relative;top: 0px;left: 0px;"
+                 v-if="changePassword">
+                <div style="width: 778px;margin: 10px auto;">
+                    <div :style='{"padding":"10px","boxShadow":"0 0 0px rgba(255,0,0,.8)","margin":"0 0 10px 0","backgroundColor":"#fff","borderRadius":"1px","borderWidth":"0 0 1px 0","borderStyle":"solid"}'
+                         class="layui-form-item main_borderColor">
+                        <label
+                                :style='{"width":"110px","padding":"0 12px 0 0","fontSize":"15px","color":"#333","textAlign":"left"}'
+                                class="layui-form-label">
+                            旧密码
+                        </label>
+                        <div class="layui-input-block input">
+                            <input autocomplete="off" class="layui-input" lay-verify="required|identity" placeholder="旧密码"
+                                   type="text" v-model="oldPassword">
+                        </div>
+                    </div>
+                    <div :style='{"padding":"10px","boxShadow":"0 0 0px rgba(255,0,0,.8)","margin":"0 0 10px 0","backgroundColor":"#fff","borderRadius":"1px","borderWidth":"0 0 1px 0","borderStyle":"solid"}'
+                         class="layui-form-item main_borderColor">
+                        <label
+                                :style='{"width":"110px","padding":"0 12px 0 0","fontSize":"15px","color":"#333","textAlign":"left"}'
+                                class="layui-form-label">
+                            新密码
+                        </label>
+                        <div class="layui-input-block input">
+                            <input autocomplete="off" class="layui-input" lay-verify="required|identity"
+                                   placeholder="新密码"
+                                   type="password" v-model="newPassword">
+                        </div>
+                    </div>
+                    <div :style='{"padding":"10px","boxShadow":"0 0 0px rgba(255,0,0,.8)","margin":"0 0 10px 0","backgroundColor":"#fff","borderRadius":"1px","borderWidth":"0 0 1px 0","borderStyle":"solid"}'
+                         class="layui-form-item main_borderColor">
+                        <label
+                                :style='{"width":"110px","padding":"0 12px 0 0","fontSize":"15px","color":"#333","textAlign":"left"}'
+                                class="layui-form-label">
+                            确认密码
+                        </label>
+                        <div class="layui-input-block input">
+                            <input autocomplete="off" class="layui-input" lay-verify="required|identity"
+                                   placeholder="确认密码"
+                                   type="password" v-model="confirmPassword">
+                        </div>
+                    </div>
+                    <div style="display: flex;">
+                        <button :style='{"padding":"0 10px","boxShadow":"0 0 0px rgba(255,0,0,.5)","margin":"10px auto 0","borderColor":"#ccc","color":"#fff","borderRadius":"8px","borderWidth":"0","width":"30%","fontSize":"15px","borderStyle":"solid","height":"44px"}'
+                                @click="back()"
+                                class="layui-btn btn-theme" class="main_backgroundColor">返回
+                        </button>
+                        <button
+                                :style='{"padding":"0 10px","boxShadow":"0 0 0px rgba(255,0,0,.5)","margin":"10px auto","borderColor":"#ccc","backgroundColor":"rgba(255, 0, 0, 1)","color":"rgba(255, 255, 255, 1)","borderRadius":"8px","borderWidth":"0","width":"30%","fontSize":"14px","borderStyle":"solid","height":"44px"}'
+                                @click="queren()" class="layui-btn">确定
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+
+
+        </div>
+        <!-- 个人中心 -->
+    </div>
+
+</div>
+
+<!-- layui -->
+<script src="../../layui/layui.js"></script>
+<!-- vue -->
+<script src="../../js/vue.js"></script>
+<!-- 引入element组件库 -->
+<script src="../../xznstatic/js/element.min.js"></script>
+<!-- 组件配置信息 -->
+<script src="../../js/config.js"></script>
+<!-- 扩展插件配置信息 -->
+<script src="../../modules/config.js"></script>
+<!-- 工具方法 -->
+<script src="../../js/utils.js"></script>
+<!-- 校验格式工具类 -->
+<script src="../../js/validate.js"></script>
+
+<script>
+    var vue = new Vue({
+        el: '#app',
+        data: {
+            //项目路径
+            baseUrl: "",
+
+            //修改密码
+            changePassword: false,
+            oldPassword: '',
+            newPassword: '',
+            confirmPassword: '',
+            detail: {
+                username: '',
+                password: '',
+                yonghuName: '',
+                yonghuPhoto: '',
+                yonghuPhone: '',
+                yonghuIdNumber: '',
+                sexTypes: '',//数字
+                sexValue: '',//数字对应的值
+                newMoney: '',
+                yonghuDelete: '',
+                createTime: '',
+            },
+            sexTypesList: [],
+            centerMenu: centerMenu
+        },
+        updated: function () {
+            // layui.form.render(null, 'myForm');
+        },
+        methods: {
+            xiugaimima() {
+                this.changePassword = true
+            },
+            back() {
+                this.changePassword = false
+            },
+            queren() {
+                // 提交代码
+                let _this = this;
+                if (_this.confirmPassword != _this.newPassword) {
+                    _this.$message.error("两次密码不一致");
+                    return;
+                }
+                // if(_this.detail.password != _this.oldPassword){
+                //     _this.$message.error("原密码输入错误");
+                //     return;
+                // }
+                // if(_this.detail.password == _this.newPassword){
+                //     _this.$message.error("新密码不能和原密码一致");
+                //     return;
+                // }
+                _this.detail.password = _this.newPassword;//密码重新赋值
+                layui.http.request(`yonghu/updatePassword`, 'get', {
+                    oldPassword: _this.oldPassword,
+                    newPassword: _this.newPassword
+                }, function (res) {
+                    _this.$message.success("修改密码成功,下次登录用新密码");
+                    _this.oldPassword = null
+                    _this.newPassword = null
+                    _this.confirmPassword = null
+                    _this.changePassword = false
+                });
+            },
+            jump(url) {
+                jump(url)
+            },
+            logout() {
+                localStorage.removeItem('Token');
+                localStorage.removeItem('role');
+                localStorage.removeItem('sessionTable');
+                localStorage.removeItem('adminName');
+                localStorage.removeItem('userid');
+                localStorage.removeItem('userTable');
+                localStorage.removeItem('iframeUrl');
+                window.parent.location.href = '../login/login.html';
+            }
+        }
+    })
+
+    layui.use(['layer', 'element', 'carousel', 'http', 'jquery', 'laydate', 'form', 'upload'], function () {
+        var layer = layui.layer;
+        var element = layui.element;
+        var carousel = layui.carousel;
+        var http = layui.http;
+        var jquery = layui.jquery;
+        var form = layui.form;
+        var upload = layui.upload;
+        vue.baseUrl = http.baseurl
+
+
+        // 充值
+        jquery('#btn-recharge').click(function (e) {
+            layer.open({
+                type: 2,
+                title: '用户充值',
+                area: ['900px', '600px'],
+                content: '../recharge/recharge.html'
+            });
+        });
+
+        // 查询字典表相关
+        // 性别的查询和初始化
+        sexTypesSelect();
+        // 日期效验规则及格式
+        dateTimePick();
+        // 表单效验规则
+        form.verify({
+            // 正整数效验规则
+            integer: [
+                /^[1-9][0-9]*$/
+                , '必须是正整数'
+            ]
+            // 小数效验规则
+            , double: [
+                /^[0-9]{0,6}(\.[0-9]{1,2})?$/
+                , '最大整数位为6为,小数最大两位'
+            ]
+        });
+
+
+        // 上传 文件/图片
+        // 头像的文件上传
+        var yonghuPhotoUpload = upload.render({
+            //绑定元素
+            elem: '#yonghuPhotoUpload',
+            //上传接口
+            url: http.baseurl + 'file/upload',
+            // 请求头
+            headers: {
+                Token: localStorage.getItem('Token')
+            },
+            // 允许上传时校验的文件类型
+            accept: 'images',
+            before: function () {
+                //loading层
+                var index = layer.load(1, {
+                    shade: [0.1, '#fff'] //0.1透明度的白色背景
+                });
+            },
+            // 上传成功
+            done: function (res) {
+                console.log(res);
+                layer.closeAll();
+                if (res.code == 0) {
+                    layer.msg("上传成功", {
+                        time: 2000,
+                        icon: 6
+                    })
+                    var url = 'upload/' + res.file;
+                    vue.detail.yonghuPhoto = url;
+                } else {
+                    layer.msg(res.msg, {
+                        time: 2000,
+                        icon: 5
+                    })
+                }
+            },
+            //请求异常回调
+            error: function () {
+                layer.closeAll();
+                layer.msg("请求接口异常", {
+                    time: 2000,
+                    icon: 5
+                })
+            }
+        });
+        // 查询用户信息
+        let table = localStorage.getItem("userTable");
+
+        if (!table) {
+            layer.msg('请先登录', {
+                time: 2000,
+                icon: 5
+            }, function () {
+                window.parent.location.href = '../login/login.html';
+            });
+        }
+
+        http.request(`yonghu/session`, 'get', {}, function (data) {
+            // 表单赋值
+            // form.val("myForm", data.data);
+            vue.detail = data.data
+            // 图片赋值
+            //jquery("#yonghuPhotoImg").attr("src", data.data.yonghuPhoto);
+        });
+
+        // 提交表单
+        form.on('submit(*)', function (data) {
+            data = vue.detail;
+            data['createTime'] = jquery("#createTime").val();
+            http.requestJson(table + '/update', 'post', data, function (res) {
+                layer.msg('修改成功', {
+                    time: 2000,
+                    icon: 6
+                }, function () {
+                    window.location.reload();
+                });
+            });
+            return false
+        });
+
+    });
+
+    // 日期框初始化
+    function dateTimePick() {
+    }
+
+
+    //性别的查询
+    function sexTypesSelect() {
+        //填充下拉框选项
+        layui.http.request("dictionary/page?page=1&limit=100&sort=&order=&dicCode=sex_types", "GET", {}, (res) => {
+            if (res.code == 0) {
+                vue.sexTypesList = res.data.list;
+            }
+        });
+    }
+
+</script>
+</body>
+</html>
